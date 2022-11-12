@@ -37,6 +37,13 @@ SetTable("test") // set table yang di tuju
    ```
 
    Untuk Melihat Contoh Kasusnya Kalian Bisa Buka Folder Example
+
+ ## Fitur Yang Akan Di Bangun
+  - join
+  - store data
+  - update data
+  - delete data
+  - first
    
    ### Licence
    MIT Licence
