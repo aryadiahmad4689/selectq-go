@@ -12,4 +12,16 @@ type DataQuery struct {
 	JOIN    string
 }
 
-const NullString = ""
+const (
+	NullString       = ""
+	Limit            = "LIMIT "
+	Offset           = "OFFSET "
+	OrderBy          = "ORDER BY "
+	GroupBy          = "GROUP BY "
+	InnerJOIN        = "INNER JOIN "
+	LeftJoin         = "LEFT JOIN "
+	RightJoin        = "RIGHT JOIN "
+	On               = " ON "
+	Equal            = "= "
+	SpaceEmptyString = " "
+)

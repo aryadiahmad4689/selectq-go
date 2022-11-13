@@ -10,14 +10,13 @@ import (
 )
 
 type Read struct {
-	db          *sql.DB
-	table       string
-	query       string
-	counterJoin int
-	where       []string
-	whereOr     []string
-	searchWere  []interface{}
-	data        entity.DataQuery
+	db         *sql.DB
+	table      string
+	query      string
+	where      []string
+	whereOr    []string
+	searchWere []interface{}
+	data       entity.DataQuery
 }
 
 func Init(ctx context.Context, conn *sql.DB) *Read {
@@ -74,40 +73,32 @@ func (p *Read) Where(where string, find string) *Read {
 }
 
 func (p *Read) GroupBy(grb string) *Read {
-	if grb == entity.NullString {
-		p.data.GROUPBY = grb
-	} else {
-		p.data.GROUPBY = "group by " + grb
+	if grb != entity.NullString {
+		p.data.GROUPBY = entity.GroupBy + grb
 	}
 
 	return p
 }
 
 func (p *Read) Limit(limit int) *Read {
-	if limit == 0 {
-		p.data.LIMIT = entity.NullString
-	} else {
-		p.data.LIMIT = "LIMIT " + strconv.Itoa(limit)
+	if limit != 0 {
+		p.data.LIMIT = entity.Limit + strconv.Itoa(limit)
 	}
 
 	return p
 }
 
 func (p *Read) Offset(offset int) *Read {
-	if offset == 0 {
-		p.data.OFFSET = entity.NullString
-	} else {
-		p.data.OFFSET = "OFFSET " + strconv.Itoa(offset)
+	if offset != 0 {
+		p.data.OFFSET = entity.Offset + strconv.Itoa(offset)
 	}
 
 	return p
 }
 
 func (p *Read) OrderBy(orderBy string) *Read {
-	if orderBy == entity.NullString {
-		p.data.ORDERBY = entity.NullString
-	} else {
-		p.data.ORDERBY = "ORDER BY " + orderBy
+	if orderBy != entity.NullString {
+		p.data.ORDERBY = entity.OrderBy + orderBy
 	}
 
 	return p
@@ -115,21 +106,21 @@ func (p *Read) OrderBy(orderBy string) *Read {
 
 func (p *Read) InnerJoin(table string, column string, coloumJoin string) *Read {
 	if table != entity.NullString || column != entity.NullString || coloumJoin != entity.NullString {
-		p.data.JOIN += "INNER JOIN " + table + " on " + fmt.Sprintf(" %s.%s ", table, column) + " = " + coloumJoin + " "
+		p.data.JOIN += entity.InnerJOIN + table + entity.On + fmt.Sprintf("%s.%s ", table, column) + entity.Equal + coloumJoin + entity.SpaceEmptyString
 	}
 	return p
 }
 
 func (p *Read) LeftJoin(table string, column string, coloumJoin string) *Read {
 	if table != entity.NullString || column != entity.NullString || coloumJoin != entity.NullString {
-		p.data.JOIN += "LEFT JOIN " + table + " on " + fmt.Sprintf(" %s.%s ", table, column) + " = " + coloumJoin + " "
+		p.data.JOIN += entity.LeftJoin + table + entity.On + fmt.Sprintf("%s.%s ", table, column) + entity.Equal + coloumJoin + entity.SpaceEmptyString
 	}
 	return p
 }
 
 func (p *Read) RightJoin(table string, column string, coloumJoin string) *Read {
 	if table != entity.NullString || column != entity.NullString || coloumJoin != entity.NullString {
-		p.data.JOIN += "RIGHT JOIN " + table + " on " + fmt.Sprintf(" %s.%s ", table, column) + " = " + coloumJoin + " "
+		p.data.JOIN += entity.RightJoin + table + entity.On + fmt.Sprintf("%s.%s ", table, column) + entity.Equal + coloumJoin + entity.SpaceEmptyString
 	}
 	return p
 }
