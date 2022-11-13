@@ -34,7 +34,6 @@ func (p *Read) WhereOr(where string, search string) *Read {
 
 func (p *Read) Get() ([]map[string]interface{}, error) {
 	query := p.generateQuery()
-	fmt.Println(query)
 	var objects = []map[string]interface{}{}
 
 	rows, err := p.db.QueryContext(context.Background(), query, p.searchWere...)
