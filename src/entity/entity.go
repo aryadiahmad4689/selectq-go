@@ -9,6 +9,7 @@ type DataQuery struct {
 	ORDERBY string
 	OFFSET  string
 	GROUPBY string
+	JOIN    string
 }
 
 const NullString = ""

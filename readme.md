@@ -12,6 +12,8 @@ selectQ.Read.SetTable("test") // set table yang di tuju
 ```
 ## Support DB
  - Postgres
+
+
 ## Fitur Yang Tersedia
 - Read
     - select
@@ -36,6 +38,14 @@ selectQ.Read.SetTable("test") // set table yang di tuju
    ```
     selectQ.Read.Select("username,email").OrderBy("id asc")Offset(1).Limit(10).Get(); // select username,email from table order by id asc offset 1 LIMIT 10
    ```
+     - join
+   ```
+    selectQ.Read.Select("chanel").InnerJoin("order_detail", "id", "order_header.id").Where("order_header.id =$1", "4").WhereOr("order_header.id !=$2", "10").GroupBy("order_header.id").Limit(10).OrderBy("order_header.id asc").Get()
+
+    selectQ.Read.Select("chanel").LeftJoin("order_detail", "id", "order_header.id").Where("order_header.id =$1", "4").WhereOr("order_header.id !=$2", "10").GroupBy("order_header.id").Limit(10).OrderBy("order_header.id asc").Get()
+
+    selectQ.Read.Select("chanel").RightJoin("order_detail", "id", "order_header.id").Where("order_header.id =$1", "4").WhereOr("order_header.id !=$2", "10").GroupBy("order_header.id").Limit(10).OrderBy("order_header.id asc").Get()
+   ```
     
     - Full Combine
     ```
@@ -45,7 +55,6 @@ selectQ.Read.SetTable("test") // set table yang di tuju
    Untuk Melihat Contoh Kasusnya Kalian Bisa Buka Folder Example
 
  ## Fitur Yang Akan Di Bangun
-  - join
   - store data
   - update data
   - delete data

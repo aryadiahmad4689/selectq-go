@@ -31,7 +31,7 @@ func TestApp(t *testing.T) {
 	selectQ := Init(context.Background(), db)
 	selectQ.Read.SetTable("order_header")
 
-	r, err := selectQ.Read.Select("id").Where("id =$1", "4").WhereOr("id !=$2", "10").GroupBy("id").Limit(10).OrderBy("id asc").Get()
+	r, err := selectQ.Read.Select("chanel").LeftJoin("order_detail", "id", "order_header.id").Where("order_header.id =$1", "4").WhereOr("order_header.id !=$2", "10").GroupBy("order_header.id").Limit(10).OrderBy("order_header.id asc").Get()
 
 	fmt.Println(r, err)
 }

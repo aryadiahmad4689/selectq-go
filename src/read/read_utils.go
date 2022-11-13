@@ -30,7 +30,7 @@ func (p *Read) SetDb(db *sql.DB) *Read {
 }
 
 func (p *Read) getQuery() *Read {
-	p.query = "SELECT {{.SELECTS}} FROM {{.TABLES}} {{.WHERE}} {{.WHEREOR}} {{.GROUPBY}} {{.ORDERBY}} {{.OFFSET}} {{.LIMIT}}"
+	p.query = "SELECT {{.SELECTS}} FROM {{.TABLES}} {{.JOIN}} {{.WHERE}} {{.WHEREOR}} {{.GROUPBY}} {{.ORDERBY}} {{.OFFSET}} {{.LIMIT}}"
 	return p
 }
 

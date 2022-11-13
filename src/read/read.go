@@ -3,19 +3,21 @@ package read
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"strconv"
 
 	"github.com/aryadiahmad4689/selectq-go/src/entity"
 )
 
 type Read struct {
-	db         *sql.DB
-	table      string
-	query      string
-	where      []string
-	whereOr    []string
-	searchWere []interface{}
-	data       entity.DataQuery
+	db          *sql.DB
+	table       string
+	query       string
+	counterJoin int
+	where       []string
+	whereOr     []string
+	searchWere  []interface{}
+	data        entity.DataQuery
 }
 
 func Init(ctx context.Context, conn *sql.DB) *Read {
@@ -32,6 +34,7 @@ func (p *Read) WhereOr(where string, search string) *Read {
 
 func (p *Read) Get() ([]map[string]interface{}, error) {
 	query := p.generateQuery()
+	fmt.Println(query)
 	var objects = []map[string]interface{}{}
 
 	rows, err := p.db.QueryContext(context.Background(), query, p.searchWere...)
@@ -42,9 +45,11 @@ func (p *Read) Get() ([]map[string]interface{}, error) {
 	if err != nil {
 		return objects, err
 	}
+
+	values := make([]interface{}, len(columns))
+	pointers := make([]interface{}, len(columns))
 	for rows.Next() {
-		values := make([]interface{}, len(columns))
-		pointers := make([]interface{}, len(columns))
+
 		for i, _ := range values {
 			pointers[i] = &values[i]
 		}
@@ -106,5 +111,26 @@ func (p *Read) OrderBy(orderBy string) *Read {
 		p.data.ORDERBY = "ORDER BY " + orderBy
 	}
 
+	return p
+}
+
+func (p *Read) InnerJoin(table string, column string, coloumJoin string) *Read {
+	if table != entity.NullString || column != entity.NullString || coloumJoin != entity.NullString {
+		p.data.JOIN += "INNER JOIN " + table + " on " + fmt.Sprintf(" %s.%s ", table, column) + " = " + coloumJoin + " "
+	}
+	return p
+}
+
+func (p *Read) LeftJoin(table string, column string, coloumJoin string) *Read {
+	if table != entity.NullString || column != entity.NullString || coloumJoin != entity.NullString {
+		p.data.JOIN += "LEFT JOIN " + table + " on " + fmt.Sprintf(" %s.%s ", table, column) + " = " + coloumJoin + " "
+	}
+	return p
+}
+
+func (p *Read) RightJoin(table string, column string, coloumJoin string) *Read {
+	if table != entity.NullString || column != entity.NullString || coloumJoin != entity.NullString {
+		p.data.JOIN += "RIGHT JOIN " + table + " on " + fmt.Sprintf(" %s.%s ", table, column) + " = " + coloumJoin + " "
+	}
 	return p
 }
