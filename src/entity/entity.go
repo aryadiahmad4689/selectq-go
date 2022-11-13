@@ -1,15 +1,17 @@
 package entity
 
 type DataQuery struct {
-	TABLES  string
-	SELECTS string
-	WHERE   string
-	WHEREOR string
-	LIMIT   string
-	ORDERBY string
-	OFFSET  string
-	GROUPBY string
-	JOIN    string
+	TABLES    string
+	SELECTS   string
+	WHERE     string
+	WHEREOR   string
+	LIMIT     string
+	ORDERBY   string
+	OFFSET    string
+	GROUPBY   string
+	JOIN      string
+	COLUMN    string
+	COLNUMBER string
 }
 
 const (
@@ -24,4 +26,6 @@ const (
 	On               = " ON "
 	Equal            = "= "
 	SpaceEmptyString = " "
+	DollarQuote      = "$"
+	OneNumber        = 1
 )

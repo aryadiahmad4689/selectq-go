@@ -46,6 +46,11 @@ selectQ.Read.SetTable("test") // set table yang di tuju
 
     selectQ.Read.Select("chanel").RightJoin("order_detail", "id", "order_header.id").Where("order_header.id =$1", "4").WhereOr("order_header.id !=$2", "10").GroupBy("order_header.id").Limit(10).OrderBy("order_header.id asc").Get()
    ```
+
+   - save data
+   ```
+    selectQ.Create.AddFied("username","aryadiahmad").AddFied("email","ariadi@gmail.com").Save(ctx)
+   ```
     
     - Full Combine
     ```
@@ -55,7 +60,6 @@ selectQ.Read.SetTable("test") // set table yang di tuju
    Untuk Melihat Contoh Kasusnya Kalian Bisa Buka Folder Example
 
  ## Fitur Yang Akan Di Bangun
-  - store data
   - update data
   - delete data
   - first
