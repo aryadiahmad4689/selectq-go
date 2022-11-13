@@ -25,10 +25,11 @@ func connectDb() *sql.DB {
 }
 
 func main() {
-	selectQ := selectq.Init(context.Background())
 	db := connectDb()
+	selectQ := selectq.Init(context.Background(), db)
 
-	selectQ.NewConnect(db).SetTable("test")
+	selectQ.Read.SetTable("test")
+
 	r, _ := selectQ.Read.Select("id").WhereOr("id =$1", "10").Get()
 
 	fmt.Println(r)

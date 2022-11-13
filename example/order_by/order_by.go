@@ -1,4 +1,4 @@
-package offset
+package order_by
 
 import (
 	"context"
@@ -30,7 +30,7 @@ func main() {
 
 	selectQ.Read.SetTable("test")
 
-	r, _ := selectQ.Read.Select("id").Offset(10).Get()
+	r, _ := selectQ.Read.Select("id").OrderBy("id asc").Get()
 
 	fmt.Println(r)
 }

@@ -1,11 +1,12 @@
-package offset
+package selectq
 
 import (
 	"context"
 	"database/sql"
 	"fmt"
+	"testing"
 
-	"github.com/aryadiahmad4689/selectq-go"
+	_ "github.com/lib/pq"
 )
 
 func connectDb() *sql.DB {
@@ -19,18 +20,18 @@ func connectDb() *sql.DB {
 	if err = db.Ping(); err != nil {
 		panic(err)
 	}
+
 	fmt.Println("success connect")
 
 	return db
 }
 
-func main() {
+func TestApp(t *testing.T) {
 	db := connectDb()
-	selectQ := selectq.Init(context.Background(), db)
+	selectQ := Init(context.Background(), db)
+	selectQ.Read.SetTable("order_header")
 
-	selectQ.Read.SetTable("test")
+	r, err := selectQ.Read.Select("id").Where("id =$1", "4").WhereOr("id !=$2", "10").GroupBy("id").Limit(10).OrderBy("id asc").Get()
 
-	r, _ := selectQ.Read.Select("id").Offset(10).Get()
-
-	fmt.Println(r)
+	fmt.Println(r, err)
 }

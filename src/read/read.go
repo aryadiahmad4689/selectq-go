@@ -4,14 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"strconv"
-	"strings"
 
 	"github.com/aryadiahmad4689/selectq-go/src/entity"
 )
 
 type Read struct {
-	DB         *sql.DB
-	Table      string
+	db         *sql.DB
+	table      string
 	query      string
 	where      []string
 	whereOr    []string
@@ -19,8 +18,10 @@ type Read struct {
 	data       entity.DataQuery
 }
 
-func Init(ctx context.Context) *Read {
-	return &Read{}
+func Init(ctx context.Context, conn *sql.DB) *Read {
+	return &Read{
+		db: conn,
+	}
 }
 
 func (p *Read) WhereOr(where string, search string) *Read {
@@ -29,24 +30,11 @@ func (p *Read) WhereOr(where string, search string) *Read {
 	return p
 }
 
-func (p *Read) generateWhereOr() *Read {
-	data := strings.Join(p.whereOr[:], " OR ")
-	if data == entity.NullString {
-		p.data.WHEREOR = data
-	} else if len(p.data.WHERE) > 1 && data != entity.NullString {
-		p.data.WHEREOR = " OR " + data
-	} else {
-		p.data.WHEREOR = "WHERE " + data
-
-	}
-	return p
-}
-
 func (p *Read) Get() ([]map[string]interface{}, error) {
 	query := p.generateQuery()
 	var objects = []map[string]interface{}{}
 
-	rows, err := p.DB.QueryContext(context.Background(), query, p.searchWere...)
+	rows, err := p.db.QueryContext(context.Background(), query, p.searchWere...)
 	if err != nil {
 		return objects, err
 	}

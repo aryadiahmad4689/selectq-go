@@ -7,34 +7,40 @@ SelectQ adalah project open source yang di bangun atas landasan fitur query eloq
  
 ## How To Use
 ```
-selectQ := selectq.Init(context.Background()) // init project
-selectQ.NewConnect(db) // masukkan koneksi *sql.DB
-SetTable("test") // set table yang di tuju
+selectQ := selectq.Init(context.Background(),db) // init project
+selectQ.Read.SetTable("test") // set table yang di tuju
 ```
+## Support DB
+ - Postgres
 ## Fitur Yang Tersedia
 - Read
     - select
    ```
-    selectQ.Select("username,email").Get(); // select username,email from table
+    selectQ.Read.Select("username,email").Get(); // select username,email from table
    ```
    - where
    ```
-    selectQ.Select("username,email").Where("username =?","ariadi").Get(); // select username,email from table where username ="ariadi"
+    selectQ.Read.Select("username,email").Where("username =?","ariadi").Get(); // select username,email from table where username ="ariadi"
     
-    selectQ.Select("username,email").Where("username =?","ariadi").WhereOr("email =?","ariadi@com").Get(); // select username,email from table where username ="ariadi" or email="riadi@.com"
+    selectQ.Read.Select("username,email").Where("username =?","ariadi").WhereOr("email =?","ariadi@com").Get(); // select username,email from table where username ="ariadi" or email="riadi@.com"
    ```
    - group by
    ```
-    selectQ.Select("username,email").GroupBy("username,email").Get(); // select username,email from table group by username,email
+    selectQ.Read.Select("username,email").GroupBy("username,email").Get(); // select username,email from table group by username,email
    ```
    - offset and limit
    ```
-    selectQ.Select("username,email").Offset(1).Limit(10).Get(); // select username,email from table offset 1 LIMIT 10
+    selectQ.Read.Select("username,email").Offset(1).Limit(10).Get(); // select username,email from table offset 1 LIMIT 10
    ```
     - order by
    ```
-    selectQ.Select("username,email").OrderBy("id asc")Offset(1).Limit(10).Get(); // select username,email from table order by id asc offset 1 LIMIT 10
+    selectQ.Read.Select("username,email").OrderBy("id asc")Offset(1).Limit(10).Get(); // select username,email from table order by id asc offset 1 LIMIT 10
    ```
+    
+    - Full Combine
+    ```
+     selectQ.Read.Select("id").Where("id =$1", "4").WhereOr("id !=$2", "10").GroupBy("id").Limit(10).OrderBy("id asc").Get()
+    ```
 
    Untuk Melihat Contoh Kasusnya Kalian Bisa Buka Folder Example
 

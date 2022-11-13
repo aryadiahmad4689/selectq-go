@@ -11,18 +11,8 @@ type SelectQ struct {
 	Read *read.Read
 }
 
-func Init(ctx context.Context) *SelectQ {
+func Init(ctx context.Context, conn *sql.DB) *SelectQ {
 	return &SelectQ{
-		Read: read.Init(ctx),
+		Read: read.Init(ctx, conn),
 	}
-}
-
-func (s *SelectQ) SetTable(table string) *SelectQ {
-	s.Read.Table = table
-	return s
-}
-
-func (s *SelectQ) NewConnect(db *sql.DB) *SelectQ {
-	s.Read.DB = db
-	return s
 }
